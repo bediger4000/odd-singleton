@@ -10,8 +10,9 @@ return the second instance.
 
 ## Analysis
 
-* [Single-threaded use](singleton1.go)
-* [Multi-threaded use](singleton2.go)
+* [singleton Go package](singleton)
+* [Single-threaded use](singleton1.go), run like: `./singleton1 21` to see alternating "singleton".
+* [Multi-threaded use](singleton2.go), run like: `./singleton2 100` to see threaded execution
 
 Of course Microsoft asked this,
 it's a strange, strange question.
@@ -30,12 +31,26 @@ a multi-instance *singleton* class,
 there's plenty of pitfalls to trigger.
 I'm not claiming my code doesn't trigger any of those problems
 except that it probably doesn't hit the data race.
+You can compile like this to test:
+
+```sh
+$ go build -race singleton2.go
+$ ./singleton2 100
+```
 
 The candidate should talk about the data race problem,
 and mention the other problems, which include hard-to-test systems.
 Since a singleton pattern does not make sense in a single-threaded-program
 (any use of a resource is a singleton use),
 talking about the data race and how to avoid it seem paramount.
+
+It's difficult for Go programmers to talk about how one might make a coherent
+package out of this singleton.
+The problem statement specifies no behavior
+of a singleton object, making it hard to write a Go interface.
+Further, the problem statement specifies a `getSingleton()` function
+that doesn't allow a programmer to pass an argument specifying
+which implementation of an interface to return.
 
 The interviewer shouldn't expect much from a candidate,
 as this problem is almost incoherent.
